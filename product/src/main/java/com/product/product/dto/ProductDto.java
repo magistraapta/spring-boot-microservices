@@ -19,9 +19,5 @@ public class ProductDto {
     @NotBlank
     @Min(0)
     private Double price;
-
-    @NotBlank
-    @Min(1)
-    private Integer quantity;
 }
 

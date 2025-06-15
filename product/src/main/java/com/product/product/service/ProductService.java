@@ -44,7 +44,6 @@ public class ProductService {
         productEntity.setName(productRequest.getName());
         productEntity.setDescription(productRequest.getDescription());
         productEntity.setPrice(productRequest.getPrice());
-        productEntity.setQuantity(productRequest.getQuantity());
         return productMapper.toDto(productRepository.save(productEntity));
     }
 

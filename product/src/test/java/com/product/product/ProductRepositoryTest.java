@@ -24,13 +24,11 @@ public class ProductRepositoryTest {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(100.0);
-        product.setQuantity(10);
 
         ProductEntity savedProduct = productRepository.save(product);
         assertEquals(product.getName(), savedProduct.getName());
         assertEquals(product.getDescription(), savedProduct.getDescription());
         assertEquals(product.getPrice(), savedProduct.getPrice());
-        assertEquals(product.getQuantity(), savedProduct.getQuantity());
     }
 
     @Test
@@ -45,7 +43,6 @@ public class ProductRepositoryTest {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(100.0);
-        product.setQuantity(10);
 
         ProductEntity savedProduct = productRepository.save(product);
         ProductEntity foundProduct = productRepository.findById(savedProduct.getId()).orElse(null);
@@ -53,7 +50,6 @@ public class ProductRepositoryTest {
         assertEquals(savedProduct.getName(), foundProduct.getName());
         assertEquals(savedProduct.getDescription(), foundProduct.getDescription());
         assertEquals(savedProduct.getPrice(), foundProduct.getPrice());
-        assertEquals(savedProduct.getQuantity(), foundProduct.getQuantity());
     }
 
     @Test
@@ -62,7 +58,6 @@ public class ProductRepositoryTest {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(100.0);
-        product.setQuantity(10);
     }
 
     @Test

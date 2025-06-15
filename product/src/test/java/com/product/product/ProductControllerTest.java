@@ -42,13 +42,11 @@ public class ProductControllerTest {
         dto1.setName("Test Product 1");
         dto1.setDescription("Test Description 1");
         dto1.setPrice(100.0);
-        dto1.setQuantity(10);
 
         dto2 = new ProductDto();
         dto2.setName("Test Product 2");
         dto2.setDescription("Test Description 2");
         dto2.setPrice(200.0);
-        dto2.setQuantity(20);
 
         // Set up mock behavior
         when(productService.getAllProducts()).thenReturn(Arrays.asList(dto1, dto2));
@@ -60,13 +58,11 @@ public class ProductControllerTest {
         newProduct.setName("Test Product 3");
         newProduct.setDescription("Test Description 3");
         newProduct.setPrice(300.0);
-        newProduct.setQuantity(30);
         
         ProductDto newProductDto = new ProductDto();
         newProductDto.setName("Test Product 3");
         newProductDto.setDescription("Test Description 3");
         newProductDto.setPrice(300.0);
-        newProductDto.setQuantity(30);
         
         when(productService.createProduct(any(ProductDto.class))).thenReturn(newProduct);
         when(productService.getProductById(3L)).thenReturn(newProductDto);

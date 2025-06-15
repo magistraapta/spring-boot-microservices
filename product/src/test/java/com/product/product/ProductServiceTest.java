@@ -40,27 +40,23 @@ public class ProductServiceTest {
         product1.setName("Test Product 1");
         product1.setDescription("Test Description 1");
         product1.setPrice(100.0);
-        product1.setQuantity(10);
 
         ProductEntity product2 = new ProductEntity();
         product2.setId(2L);
         product2.setName("Test Product 2");
         product2.setDescription("Test Description 2");
         product2.setPrice(200.0);
-        product2.setQuantity(20);
 
         // Create corresponding DTOs
         ProductDto dto1 = new ProductDto();
         dto1.setName("Test Product 1");
         dto1.setDescription("Test Description 1");
         dto1.setPrice(100.0);
-        dto1.setQuantity(10);
 
         ProductDto dto2 = new ProductDto();
         dto2.setName("Test Product 2");
         dto2.setDescription("Test Description 2");
         dto2.setPrice(200.0);
-        dto2.setQuantity(20);
 
         // Store test data as class fields for use in tests
         this.testProduct1 = product1;
