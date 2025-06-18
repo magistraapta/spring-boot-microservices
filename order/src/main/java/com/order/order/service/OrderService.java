@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.order.order.client.Product;
 import com.order.order.client.ProductClient;
 import com.order.order.entity.Order;
+import com.order.order.entity.PaymentStatusEnum;
 import com.order.order.repository.OrderRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,20 @@ public class OrderService {
         log.info("Creating order: {}", order);
         // Decrease product stock
         productClient.decreaseStock(order.getProductId(), order.getQuantity());
-        
         // Save the order
         return orderRepository.save(order);
-    }   
+    }
+
+    public boolean isOrderExist(Long orderId) {
+        return orderRepository.existsById(orderId);
+    }
+
+    public void updateOrderPaymentStatus(Long orderId, PaymentStatusEnum paymentStatus) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setPaymentStatus(paymentStatus);
+        orderRepository.save(order);
+    }
 
     public List<Order> getAllOrders() {
         log.info("Getting all orders");

@@ -1,10 +1,8 @@
-package com.order.order.entity;
+package com.payment.payment.entity;
 
-
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,15 +11,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "payments")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long productId;
-    private Integer quantity;
 
-    @Enumerated(EnumType.ORDINAL)
-    private PaymentStatusEnum paymentStatus;
+    private Long orderId;
+
+    private BigDecimal amount;
+
+    private String paymentMethod;
 }
-

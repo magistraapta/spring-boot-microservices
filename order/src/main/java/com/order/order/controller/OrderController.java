@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.order.order.client.Product;
 import com.order.order.entity.Order;
+import com.order.order.entity.PaymentStatusEnum;
 import com.order.order.service.OrderService;
 
 @RestController
@@ -55,6 +58,7 @@ public class OrderController {
             }
 
             Order createdOrder = orderService.createOrder(order);
+            
             return ResponseEntity.ok(Map.of(
                 "message", "Order created successfully",
                 "order", createdOrder
@@ -64,6 +68,16 @@ public class OrderController {
                 "error", "Failed to create order: " + e.getMessage()
             ));
         }
+    }
+
+    @GetMapping("/{orderId}")
+    public boolean getOrderById(@PathVariable Long orderId) {
+        return orderService.isOrderExist(orderId);
+    }
+
+    @PutMapping("/{orderId}")
+    public void updateOrderPaymentStatus(@PathVariable Long orderId, @RequestBody PaymentStatusEnum paymentStatus) {
+        orderService.updateOrderPaymentStatus(orderId, paymentStatus);
     }
 
     @GetMapping

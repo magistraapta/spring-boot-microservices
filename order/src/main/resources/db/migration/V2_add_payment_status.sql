@@ -1,0 +1,2 @@
+ALTER TABLE "order"
+ADD COLUMN payment_status VARCHAR(32) DEFAULT 'PENDING';
