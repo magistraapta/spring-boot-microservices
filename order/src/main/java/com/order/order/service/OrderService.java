@@ -5,11 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.order.order.client.Product;
 import com.order.order.client.ProductClient;
 import com.order.order.entity.Order;
 import com.order.order.repository.OrderRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class OrderService {
     
     private final OrderRepository orderRepository;
@@ -20,12 +24,14 @@ public class OrderService {
         this.productClient = productClient;
     }
 
-    public com.order.order.client.Product getProductById(Long productId) {
+    public Product getProductById(Long productId) {
+        log.info("Getting product by id: {}", productId);
         return productClient.getProductById(productId);
     }
 
     @Transactional
     public Order createOrder(Order order) {
+        log.info("Creating order: {}", order);
         // Decrease product stock
         productClient.decreaseStock(order.getProductId(), order.getQuantity());
         
@@ -34,6 +40,7 @@ public class OrderService {
     }   
 
     public List<Order> getAllOrders() {
+        log.info("Getting all orders");
         return orderRepository.findAll();
     }
 }
