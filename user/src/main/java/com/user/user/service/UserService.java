@@ -1,5 +1,7 @@
 package com.user.user.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,10 @@ public class UserService {
             throw new Exception("User not found");
         }
         userRepository.delete(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
     
 }
