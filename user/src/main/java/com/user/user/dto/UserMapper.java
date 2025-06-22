@@ -13,6 +13,6 @@ public interface UserMapper {
     User toEntity(UserRequest userRequest);
 
     @Mapping(target = "role", source = "role")
-    @Mapping(target = "message", ignore = true)
+    @Mapping(target = "id", source = "id")
     UserResponse toResponse(User user);
 }
