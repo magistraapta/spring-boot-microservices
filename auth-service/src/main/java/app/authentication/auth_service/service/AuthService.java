@@ -3,12 +3,13 @@ package app.authentication.auth_service.service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import app.authentication.auth_service.client.UserClient;
 import app.authentication.auth_service.dto.AuthRequest;
 import app.authentication.auth_service.dto.AuthResponse;
+import app.authentication.auth_service.dto.UserDto;
+import app.authentication.auth_service.exc.WrongCredentialsException;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -31,10 +32,10 @@ public class AuthService {
         if (authentication.isAuthenticated()) {
             return new AuthResponse(jwtService.generateToken(request.getUsername()));
         }
-        throw new RuntimeException("Invalid credentials");
+        throw new WrongCredentialsException("Invalid credentials");
     }
 
-    public AuthRequest register(AuthRequest request) {
+    public UserDto register(AuthRequest request) {
         log.info("Service: Registering user: {}", request.getUsername());
         return userClient.createUser(request).getBody();
     }

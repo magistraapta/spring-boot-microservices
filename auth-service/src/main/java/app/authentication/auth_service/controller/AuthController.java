@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.authentication.auth_service.dto.AuthRequest;
 import app.authentication.auth_service.dto.AuthResponse;
+import app.authentication.auth_service.dto.UserDto;
 import app.authentication.auth_service.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthRequest> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<UserDto> register(@RequestBody AuthRequest request) {
         log.info("Controller: Registering user: {}", request.getUsername());
         return ResponseEntity.ok(authService.register(request));
     }
