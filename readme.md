@@ -76,7 +76,7 @@ mvn test
 # To-do List
 - [ ] Fix error handling in controller
 - [ ] setup auth-service
-- [ ]
+- [ ] some issues in login function
 
 ## Contributing
 1. Fork the repository
