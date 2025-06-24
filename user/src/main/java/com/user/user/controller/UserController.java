@@ -65,8 +65,21 @@ public class UserController {
         }
     }
 
-    @GetMapping("/by-username")
+    @GetMapping("/get-by-username")
     public ResponseEntity<?> getUserByUsername(@RequestParam String username) {
+        try {
+            User user = userService.getUserByUsername(username);
+            return ResponseEntity.ok(userMapper.toResponse(user));
+        } catch (Exception e) {
+            if (e.getMessage().equals("User not found")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user");
+        }
+    }
+
+    @GetMapping("/auth/get-by-username")
+    public ResponseEntity<?> getUserByUsernameForAuth(@RequestParam String username) {
         try {
             User user = userService.getUserByUsername(username);
             return ResponseEntity.ok(userMapper.toResponse(user));

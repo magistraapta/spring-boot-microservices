@@ -3,6 +3,7 @@ package app.authentication.auth_service.service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import app.authentication.auth_service.client.UserClient;
@@ -29,8 +30,10 @@ public class AuthService {
     public AuthResponse login(AuthRequest request) {
         log.info("Service: Logging in user: {}", request.getUsername());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         if (authentication.isAuthenticated()) {
-            return new AuthResponse(jwtService.generateToken(request.getUsername()));
+            return AuthResponse.builder().token(jwtService.generateToken(request.getUsername())).build();
         }
         throw new WrongCredentialsException("Invalid credentials");
     }

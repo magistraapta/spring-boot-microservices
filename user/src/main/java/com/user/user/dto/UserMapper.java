@@ -14,5 +14,6 @@ public interface UserMapper {
 
     @Mapping(target = "role", source = "role")
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "password", source = "password")
     UserResponse toResponse(User user);
 }
