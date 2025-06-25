@@ -20,7 +20,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/users/auth/**").permitAll()
                 .requestMatchers("/users").permitAll() // Allow user registration
-                .anyRequest().authenticated()
+                .anyRequest().permitAll() // Allow all requests since API Gateway handles auth
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .build();
