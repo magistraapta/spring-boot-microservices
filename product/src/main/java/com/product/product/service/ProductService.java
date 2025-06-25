@@ -1,42 +1,53 @@
 package com.product.product.service;
 
 import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.product.product.dto.ProductResponse;
 import com.product.product.entity.Product;
+import com.product.product.exc.InsufficientStockException;
+import com.product.product.exc.InvalidRequestException;
+import com.product.product.exc.ProductNotFoundException;
+import com.product.product.mapper.ProductMapper;
 import com.product.product.repository.ProductRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }  
 
     public void createProduct(Product product) {
         productRepository.save(product);
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         log.info("Getting all products");
-        return productRepository.findAll();
+        return productRepository.findAll()
+            .stream()
+            .map(productMapper::toProductResponse)
+            .collect(Collectors.toList());  
     }
 
-    public Product getProductById(Long id) {
+    public ProductResponse getProductById(Long id) {
         log.info("Getting product by id: {}", id);
-        return productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+        return productMapper.toProductResponse(productRepository.findById(id)
+            .orElseThrow(() -> new ProductNotFoundException(id)));
     }
 
     public void updateProduct(Long id, Product product) {
         log.info("Updating product by id: {}", id);
-        Product existingProduct = getProductById(id);
+        Product existingProduct = productMapper.toProduct(getProductById(id));
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setPrice(product.getPrice());
@@ -46,18 +57,22 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         log.info("Deleting product by id: {}", id);
+        // Check if product exists before deleting
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException(id);
+        }
         productRepository.deleteById(id);
     }
 
     public void decreaseStock(Long id, Integer quantity) {
         log.info("Decreasing stock for product by id: {}", id);
         if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than 0");
+            throw new InvalidRequestException("Quantity must be greater than 0");
         }
         
-        Product product = getProductById(id);
+        Product product = productMapper.toProduct(getProductById(id));
         if (product.getQuantity() < quantity) {
-            throw new RuntimeException("Insufficient stock. Available: " + product.getQuantity() + ", Requested: " + quantity);
+            throw new InsufficientStockException(product.getQuantity(), quantity);
         }
         
         product.setQuantity(product.getQuantity() - quantity);

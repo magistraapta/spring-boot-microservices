@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.product.product.dto.ProductResponse;
 import com.product.product.entity.Product;
 import com.product.product.service.ProductService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/products")
@@ -28,77 +32,44 @@ public class ProductController {
     }
     
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody Product product) {
-        try {
-            productService.createProduct(product);
-            return ResponseEntity.ok(product);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
+        productService.createProduct(product);
+        return ResponseEntity.ok(product);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        try {
-            List<Product> products = productService.getAllProducts();
-            return ResponseEntity.ok(products);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        List<ProductResponse> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        try {
-            Product product = productService.getProductById(id);
-            return ResponseEntity.ok(product);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable @Min(1) Long id) {
+        ProductResponse product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        try {
-            productService.updateProduct(id, product);
-            return ResponseEntity.ok(product);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Product> updateProduct(@PathVariable @Min(1) Long id, @Valid @RequestBody Product product) {
+        productService.updateProduct(id, product);
+        return ResponseEntity.ok(product);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        try {
-            productService.deleteProduct(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> deleteProduct(@PathVariable @Min(1) Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/decrease")
-    public ResponseEntity<?> decreaseStock(@PathVariable Long id, @RequestParam(required = true) Integer quantity) {
-        try {
-            productService.decreaseStock(id, quantity);
-            return ResponseEntity.ok(Map.of(
-                "message", "Product stock decreased successfully",
-                "productId", id,
-                "decreasedQuantity", quantity
-            ));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "error", e.getMessage()
-            ));
-        } catch (RuntimeException e) {
-            if (e.getMessage().contains("Product not found")) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.badRequest().body(Map.of(
-                "error", e.getMessage()
-            ));
-        }
+    public ResponseEntity<Map<String, Object>> decreaseStock(
+            @PathVariable @Min(1) Long id, 
+            @RequestParam(required = true) @Min(1) Integer quantity) {
+        productService.decreaseStock(id, quantity);
+        return ResponseEntity.ok(Map.of(
+            "message", "Product stock decreased successfully",
+            "productId", id,
+            "decreasedQuantity", quantity
+        ));
     }
-        
 }
