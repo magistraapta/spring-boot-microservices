@@ -20,6 +20,7 @@ public class Order {
     private Long id;
     private Long productId;
     private Integer quantity;
+    private Long userId;
 
     @Enumerated(EnumType.ORDINAL)
     private PaymentStatusEnum paymentStatus;

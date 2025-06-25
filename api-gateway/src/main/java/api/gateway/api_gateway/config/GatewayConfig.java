@@ -22,7 +22,7 @@ public class GatewayConfig {
                 .filters(f -> f.filter(jwtAuthFilter))
                 .uri("lb://auth-service"))
             .route("user", r -> r.path("/users/**")
-                // .filters(f -> f.filter(jwtAuthFilter))
+                .filters(f -> f.filter(jwtAuthFilter))
                 .uri("lb://user"))
             .route("product", r -> r.path("/products/**")
                 .filters(f -> f.filter(jwtAuthFilter))

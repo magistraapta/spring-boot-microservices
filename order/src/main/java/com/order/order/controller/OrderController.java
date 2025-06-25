@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.order.order.client.Product;
+import com.order.order.dto.Product;
 import com.order.order.entity.Order;
 import com.order.order.entity.PaymentStatusEnum;
 import com.order.order.service.OrderService;

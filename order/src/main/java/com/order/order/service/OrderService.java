@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.order.order.client.Product;
 import com.order.order.client.ProductClient;
+import com.order.order.client.UserClient;
+import com.order.order.dto.Product;
 import com.order.order.entity.Order;
 import com.order.order.entity.PaymentStatusEnum;
 import com.order.order.repository.OrderRepository;
@@ -19,10 +20,11 @@ public class OrderService {
     
     private final OrderRepository orderRepository;
     private final ProductClient productClient;
-
-    public OrderService(OrderRepository orderRepository, ProductClient productClient) {
+    private final UserClient userClient;
+    public OrderService(OrderRepository orderRepository, ProductClient productClient, UserClient userClient) {
         this.orderRepository = orderRepository;
         this.productClient = productClient;
+        this.userClient = userClient;
     }
 
     public Product getProductById(Long productId) {
@@ -33,6 +35,11 @@ public class OrderService {
     @Transactional
     public Order createOrder(Order order) {
         log.info("Creating order: {}", order);
+        Long userId = userClient.getUserById(order.getUserId()).getId();
+        if (userId == null || userId == 0) {
+            throw new RuntimeException("User not found");
+        }
+        order.setUserId(userId);
         // Decrease product stock
         productClient.decreaseStock(order.getProductId(), order.getQuantity());
         // Save the order

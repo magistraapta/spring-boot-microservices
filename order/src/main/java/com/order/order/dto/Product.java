@@ -1,4 +1,4 @@
-package com.order.order.client;
+package com.order.order.dto;
 
 import java.math.BigDecimal;
 import lombok.Data;
