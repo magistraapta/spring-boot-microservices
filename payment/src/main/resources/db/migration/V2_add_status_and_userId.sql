@@ -1,0 +1,1 @@
+alter table payments add column user_id bigint not null;

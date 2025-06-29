@@ -1,0 +1,2 @@
+alter table payments add column created_at timestamp not null default current_timestamp;
+alter table payments add column updated_at timestamp not null default current_timestamp on update current_timestamp;

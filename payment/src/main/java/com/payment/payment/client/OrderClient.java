@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.payment.payment.entity.PaymentStatusEnum;
 
-@FeignClient(name = "order-service", url = "http://localhost:8082")
+@FeignClient(name = "order-service", url = "${order-service.url}")
 public interface OrderClient {
     @PutMapping("/orders/{orderId}")
     void updateOrderPaymentStatus(@PathVariable Long orderId, @RequestBody PaymentStatusEnum paymentStatus);

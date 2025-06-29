@@ -1,9 +1,8 @@
 package com.payment.payment.entity;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,18 +11,16 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "payments")
-public class Payment {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long orderId;
-
-    private BigDecimal amount;
-
-    private String paymentMethod;
+    private Long productId;
+    private Integer quantity;
     private Long userId;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+
+    @Enumerated(EnumType.ORDINAL)
+    private PaymentStatusEnum paymentStatus;
 }
+
