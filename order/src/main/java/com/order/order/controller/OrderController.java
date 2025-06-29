@@ -2,6 +2,7 @@ package com.order.order.controller;
 
 import java.util.List;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.order.order.config.RabbitConfig;
+import com.order.order.dto.OrderRequest;
 import com.order.order.dto.Product;
 import com.order.order.entity.Order;
 import com.order.order.entity.PaymentStatusEnum;
@@ -27,6 +30,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+    private final RabbitTemplate rabbitTemplate;
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
@@ -40,6 +44,9 @@ public class OrderController {
         }
 
         Order createdOrder = orderService.createOrder(orderMapper.toOrderRequest(order));
+        
+        // Send the created order to the payment queue for processing
+        rabbitTemplate.convertAndSend(RabbitConfig.QUEUE, createdOrder);
         
         return ResponseEntity.ok(createdOrder);
     }
