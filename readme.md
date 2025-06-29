@@ -6,6 +6,9 @@ This is a simple microservice application built with Spring Boot. The applicatio
 ## Architecture Diagram
 ![diagram](./image/Screenshot%202025-06-29%20at%2014.14.30.png)
 
+## Order Flow
+
+
 ## Prerequisites
 - Java 17 or higher
 - Maven 3.6.x or higher
@@ -54,8 +57,9 @@ src/
 - RESTful API endpoints
 - Spring Boot auto-configuration
 - Spring Data JPA for data persistence
-- Spring Security (if implemented)
-- Swagger/OpenAPI documentation (if implemented)
+- Spring Security 
+- Swagger/OpenAPI documentation
+- Asynchronous Communicaiton using RabbitMQ
 
 ## API Documentation
 Once the application is running, you can access the API documentation at:
@@ -76,10 +80,13 @@ Run the test suite using:
 mvn test
 ```
 
-# To-do List
-- [ ] Fix error handling in controller
-- [ ] setup auth-service
-- [ ] some issues in login function
+# Improvement List
+- [x] Fix error handling in controller
+- [x] setup auth-service
+- [x] some issues in login function
+- [ ] add swagger API docs
+- [ ] add notification service
+- [ ]
 
 ## Contributing
 1. Fork the repository
@@ -87,10 +94,3 @@ mvn test
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contact
-Your Name - your.email@example.com
-Project Link: [https://github.com/yourusername/microservice](https://github.com/yourusername/microservice)
