@@ -3,6 +3,9 @@
 ## Overview
 This is a simple microservice application built with Spring Boot. The application demonstrates basic microservice architecture and best practices.
 
+## Architecture Diagram
+![diagram](./image/Screenshot%202025-06-29%20at%2014.14.30.png)
+
 ## Prerequisites
 - Java 17 or higher
 - Maven 3.6.x or higher
