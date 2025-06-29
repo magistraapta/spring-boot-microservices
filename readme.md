@@ -86,7 +86,7 @@ mvn test
 - [x] some issues in login function
 - [ ] add swagger API docs
 - [ ] add notification service
-- [ ]
+- [ ] add file-storage service
 
 ## Contributing
 1. Fork the repository
