@@ -3,6 +3,29 @@
 ## Overview
 This is a simple microservice application built with Spring Boot. The application demonstrates basic microservice architecture and best practices.
 
+## Project Highlights
+
+- **Microservice Architecture**: Each business domain (Order, Product, Payment, User, Auth) is implemented as an independent Spring Boot service.
+- **API Gateway**: Centralized entry point for routing and securing API requests.
+- **Service Discovery**: Eureka Server for dynamic service registration and discovery.
+- **Authentication & Authorization**: JWT-based security with a dedicated Auth Service.
+- **Asynchronous Communication**: RabbitMQ for decoupled, event-driven messaging between services.
+- **Data Persistence**: Spring Data JPA with relational databases (configured per service).
+- **Exception Handling**: Centralized error handling for robust APIs.
+- **API Documentation**: Swagger/OpenAPI for interactive API docs.
+- **Configuration Management**: Externalized via `application.properties` for each service.
+- **Testing**: JUnit-based unit and integration tests.
+- **Containerization Ready**: Modular structure suitable for Docker and Kubernetes deployment (can be extended).
+- **Tech Stack**:  
+  - Java 17+  
+  - Spring Boot  
+  - Spring Security  
+  - Spring Data JPA  
+  - RabbitMQ  
+  - Eureka (Netflix OSS)  
+  - Swagger/OpenAPI  
+  - Maven
+
 ## Architecture Diagram
 ![diagram](./image/Screenshot%202025-06-29%20at%2014.14.30.png)
 
