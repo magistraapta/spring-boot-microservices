@@ -17,11 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.user.user.dto.UserMapper;
 import com.user.user.dto.UserRequest;
+import com.user.user.dto.UserResponse;
 import com.user.user.entity.User;
 import com.user.user.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User Service", description = "User Service API Documentation")
 public class UserController {
     private final UserService userService;
 
@@ -32,6 +41,7 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
+    @Operation(summary = "Get all users", description = "Get all users from the database")
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUsers() {
@@ -39,6 +49,13 @@ public class UserController {
         return ResponseEntity.ok(users.stream().map(userMapper::toResponse).collect(Collectors.toList()));
     }
 
+    @Operation(summary = "Create a new user", description = "Create a new user in the database")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User created successfully", content = @Content(schema = @Schema(implementation = UserResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content(schema = @Schema(implementation = String.class))),
+        @ApiResponse(responseCode = "409", description = "User already exists", content = @Content(schema = @Schema(implementation = String.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = String.class)))
+    })
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) {
         try {
@@ -52,6 +69,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get a user by id", description = "Get a user by id from the database")
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         try {
@@ -65,6 +83,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get a user by username", description = "Get a user by username from the database")
     @GetMapping("/get-by-username")
     public ResponseEntity<?> getUserByUsername(@RequestParam String username) {
         try {
@@ -78,6 +97,12 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get a user by username for authentication", description = "Get a user by username from the database for authentication")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User retrieved successfully", content = @Content(schema = @Schema(implementation = UserResponse.class))),
+        @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(implementation = String.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(schema = @Schema(implementation = String.class)))
+    })
     @GetMapping("/auth/get-by-username")
     public ResponseEntity<?> getUserByUsernameForAuth(@RequestParam String username) {
         try {
@@ -91,6 +116,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Delete a user by id", description = "Delete a user by id from the database")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
