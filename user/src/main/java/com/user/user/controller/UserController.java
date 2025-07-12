@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.user.user.dto.UserMapper;
-import com.user.user.dto.UserRequest;
-import com.user.user.dto.UserResponse;
+import com.user.user.dto.mapper.UserMapper;
+import com.user.user.dto.response.UserRequest;
+import com.user.user.dto.response.UserResponse;
 import com.user.user.entity.User;
+import com.user.user.exc.UserNotFoundException;
 import com.user.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,29 +72,23 @@ public class UserController {
 
     @Operation(summary = "Get a user by id", description = "Get a user by id from the database")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id) throws Exception {
         try {
             User user = userService.getUserById(id);
             return ResponseEntity.ok(userMapper.toResponse(user));
-        } catch (Exception e) {
-            if (e.getMessage().equals("User not found")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @Operation(summary = "Get a user by username", description = "Get a user by username from the database")
     @GetMapping("/get-by-username")
-    public ResponseEntity<?> getUserByUsername(@RequestParam String username) {
+    public ResponseEntity<?> getUserByUsername(@RequestParam String username) throws Exception {
         try {
             User user = userService.getUserByUsername(username);
             return ResponseEntity.ok(userMapper.toResponse(user));
-        } catch (Exception e) {
-            if (e.getMessage().equals("User not found")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -118,15 +113,12 @@ public class UserController {
 
     @Operation(summary = "Delete a user by id", description = "Delete a user by id from the database")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) throws Exception {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok("User deleted successfully");
-        } catch (Exception e) {
-            if (e.getMessage().equals("User not found")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
