@@ -1,9 +1,11 @@
-package com.user.user.dto;
+package com.user.user.dto.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
 
+import com.user.user.dto.response.UserRequest;
+import com.user.user.dto.response.UserResponse;
 import com.user.user.entity.User;
 
 @Mapper(componentModel = ComponentModel.SPRING)

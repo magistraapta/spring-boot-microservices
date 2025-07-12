@@ -1,4 +1,4 @@
-package com.user.user.dto;
+package com.user.user.dto.response;
 
 import com.user.user.enums.Role;
 
