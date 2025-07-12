@@ -1,7 +1,5 @@
 package com.payment.payment.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +21,21 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-
     @PostMapping("/{orderId}")
-    public Payment createPayment(@PathVariable Long orderId, @RequestBody PaymentRequest paymentRequest) {
-        return paymentService.createPayment(orderId, paymentRequest);
+    public Payment createPayment(@PathVariable Long orderId, @RequestBody PaymentRequest paymentRequest) throws Exception {
+        try {
+            return paymentService.createPayment(orderId, paymentRequest);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
-    public Payment getPaymentById(@PathVariable Long id) {
-        return paymentService.getPaymentById(id);
+    public Payment getPaymentById(@PathVariable Long id) throws Exception {
+        try {
+            return paymentService.getPaymentById(id);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 }
